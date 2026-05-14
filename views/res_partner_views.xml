@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_blog_notifications" model="ir.ui.view">
+        <field name="name">res.partner.blog.notifications</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Blog-Benachrichtigungen" name="blog_notifications"
+                      groups="base.group_no_one">
+                    <group>
+                        <field name="blog_notification_optout"/>
+                        <field name="blog_optout_blog_ids" widget="many2many_tags"
+                               options="{'no_create': True}"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
