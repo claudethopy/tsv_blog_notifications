@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_blog_notification_queue_admin,tsv.blog.notification.queue admin,model_tsv_blog_notification_queue,base.group_system,1,1,1,1

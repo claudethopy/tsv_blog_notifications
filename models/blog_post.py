@@ -14,7 +14,9 @@ class BlogPost(models.Model):
         return result
 
     def _notify_members(self):
-        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        params = self.env['ir.config_parameter'].sudo()
+        if params.get_param('tsv_blog_notifications.enabled', 'True') != 'True':
+            return
 
         candidates = self.env['res.partner'].search([
             ('tsv_membership_state', '=', 'member'),
@@ -25,21 +27,14 @@ class BlogPost(models.Model):
             lambda p: self.blog_id.id not in p.blog_optout_blog_ids.ids
         )
 
+        queue_vals = []
         for partner in partners:
-            token = partner._get_or_create_blog_token()
-            body = self.env['ir.qweb']._render(
-                'tsv_blog_notifications.blog_notification_email_body',
-                {
-                    'post': self,
-                    'partner': partner,
-                    'unsubscribe_blog_url': f'{base_url}/blog/abmelden/{token}/{self.blog_id.id}',
-                    'unsubscribe_all_url': f'{base_url}/blog/abmelden/{token}',
-                    'base_url': base_url,
-                },
-            )
-            self.env['mail.mail'].sudo().create({
-                'subject': f'Neuer Beitrag: {self.name}',
-                'email_to': partner.email,
-                'body_html': body,
-                'auto_delete': True,
-            }).send()
+            partner._get_or_create_blog_token()
+            queue_vals.append({
+                'blog_post_id': self.id,
+                'partner_id': partner.id,
+                'email': partner.email,
+            })
+
+        if queue_vals:
+            self.env['tsv.blog.notification.queue'].create(queue_vals)
