@@ -1,6 +1,6 @@
 {
     'name': 'TSV Blog-Benachrichtigungen',
-    'version': '18.0.1.1.0',
+    'version': '18.0.1.2.0',
     'summary': 'Automatische E-Mail-Benachrichtigung für TSV-Mitglieder bei neuen Blogbeiträgen',
     'author': 'TSV Schwerin',
     'category': 'Website',
