@@ -31,7 +31,7 @@ class BlogNotificationQueue(models.Model):
 
     def _send_batch(self):
         params = self.env['ir.config_parameter'].sudo()
-        if params.get_param('tsv_blog_notifications.enabled', 'True') != 'True':
+        if params.get_param('tsv_blog_notifications.enabled', 'False') != 'True':
             return
         batch_size = int(params.get_param('tsv_blog_notifications.batch_size', '30'))
         base_url = params.get_param('web.base.url')

@@ -15,7 +15,7 @@ class BlogPost(models.Model):
 
     def _notify_members(self):
         params = self.env['ir.config_parameter'].sudo()
-        if params.get_param('tsv_blog_notifications.enabled', 'True') != 'True':
+        if params.get_param('tsv_blog_notifications.enabled', 'False') != 'True':
             return
 
         candidates = self.env['res.partner'].search([
