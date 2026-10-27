@@ -37,4 +37,4 @@ class BlogPost(models.Model):
             })
 
         if queue_vals:
-            self.env['tsv.blog.notification.queue'].create(queue_vals)
+            self.env['tsv.blog.notification.queue'].sudo().create(queue_vals)
